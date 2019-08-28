@@ -1,0 +1,14 @@
+{
+  "name": "koa",
+  "version": "1.1.1",
+  "description": "koa ",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "koa": "^2.8.1"
+  }
+}
