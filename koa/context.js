@@ -6,16 +6,22 @@ class Delegator{
 
     getters(name) {
         let { proto, target }  = this;
-        proto.__defineGetter__(name, function(){
-            return this[target][name];
-        });
+        Object.defineProperty(proto, name, {
+            get() {
+                return this[target][name];
+            },
+            configurable: true
+          });
         return this;
     }
 
     setters(name) {
         let { proto, target }  = this;
-        proto.__defineSetter__(name, function(val){
-            return this[target][name] = val;
+        Object.defineProperty(proto, name, {
+            set(v) {
+                this[target][name] = v;
+            },
+            configurable: true
         });
         return this;
     }
