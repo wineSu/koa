@@ -14,7 +14,7 @@ let log = ()=>{
 app.use(async (ctx, next) =>{
     console.log(1)
     await log()
-    next()
+    await next()
     console.log(2)
 })
 
@@ -22,9 +22,9 @@ app.use(middleRouter())
 
 app.use(async (ctx, next) =>{
     console.log(3)
-    ctx.response.type = 'text/html';
-    ctx.response.body = '<h1>Hello, koa2!</h1>';
-    next()
+    ctx.type = 'text/html';
+    ctx.body = '<h1>Hello, koa2!</h1>';
+    await next()
     await log()
     console.log(4)
 })

@@ -10,34 +10,35 @@ class Koa{
         this.response = response;
         this.middlewares = [];
     }
+
     use(cb){
-        //获取参入的函数
-        // this.callbackFn = cb;
-        this.middlewares.push(cb)
+        this.middlewares.push(cb);
+        return this;
     }
+
     createContext(req, res){
-        //ctx拿到contex属性  保证不会修改context
+        // 多个示例 避免数据共享
         let ctx = Object.create(this.context);
         ctx.request = Object.create(this.request);
-        ctx.req = ctx.request.req = req;
         ctx.response = Object.create(this.response);
+
+        ctx.req = ctx.request.req = req;
         ctx.res = ctx.response.res = res;
         return ctx;
     }
+
     compose(ctx, middlewares){
-        function dispatch(index){
+        let dispatch = (index) => {
             if(index === middlewares.length){
-                //都执行完毕 
                 return Promise.resolve();
             }
             let mid = middlewares[index];
-            //递归 next 洋葱圈 
+            // next  
             return Promise.resolve(mid(ctx, ()=> dispatch(index + 1)))
         }
         return dispatch(0);
     }
     
-    //use中回调
     handleRequest(req, res) {
         res.statusCode = 404;
         let ctx = this.createContext(req, res)

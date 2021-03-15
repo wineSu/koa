@@ -6,12 +6,6 @@ class Delegator{
 
     getters(name) {
         let { proto, target }  = this;
-        // Object.defineProperty是有缺点的，对于同一个 name 无法重复创建
-        // Object.defineProperty(proto, name, {
-        //     get(){
-        //         return proto[target][name];
-        //     }
-        // })
         proto.__defineGetter__(name, function(){
             return this[target][name];
         });
