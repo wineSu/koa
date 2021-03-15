@@ -5,7 +5,7 @@ let app = new Koa();
 let log = ()=>{
     return new Promise((resolve)=>{
         setTimeout(()=>{
-            console.log(11111111111)
+            console.log(2222222222222)
             resolve()
         },1000)
     })
@@ -20,9 +20,12 @@ app.use(async (ctx, next) =>{
 
 app.use(middleRouter())
 
-app.use((ctx, next) =>{
+app.use(async (ctx, next) =>{
     console.log(3)
+    ctx.response.type = 'text/html';
+    ctx.response.body = '<h1>Hello, koa2!</h1>';
     next()
+    await log()
     console.log(4)
 })
 

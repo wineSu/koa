@@ -36,8 +36,9 @@ class Koa{
         }
         return dispatch(0);
     }
+    
     //use中回调
-    handleRequest(req, res){
+    handleRequest(req, res) {
         res.statusCode = 404;
         let ctx = this.createContext(req, res)
         let composeMiddleware = this.compose(ctx, this.middlewares); //执行后ctx.body会被修改
@@ -51,9 +52,9 @@ class Koa{
             }
         })
     }
-    listen(){
+    listen(...arg){
         let server = http.createServer(this.handleRequest.bind(this))
-        server.listen(...arguments)
+        server.listen(...arg)
     }
 }
 
