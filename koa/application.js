@@ -61,6 +61,10 @@ class Koa extends Emitter{
 
     handleRequest(req, res) {
         res.statusCode = 404;
+        // 错误机制
+        if (!this.listenerCount('error')){
+            this.on('error', this.onerror)
+        };
         let ctx = this.createContext(req, res);
         const onerror = err => ctx.onerror(err);
         let composeMiddleware = this.compose(ctx, this.middlewares); //执行后ctx.body会被修改
