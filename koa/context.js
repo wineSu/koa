@@ -27,7 +27,29 @@ class Delegator{
     }
 }
 
-let proto = {}
+let proto = {
+    throw(...arg){
+        const err = new Error();
+        err.status = arg[0];
+        err.message = arg[1];
+        throw err;
+    },
+    onerror(err) {
+        if (null == err) return;
+       
+        this.app.emit('error', err, this);
+    
+        const { res } = this;
+        if (typeof res.getHeaderNames === 'function') {
+            res.getHeaderNames().forEach(name => res.removeHeader(name));
+        }
+        
+        // respond
+        this.type = 'text/plain;charset=utf-8';
+        this.status = err.status;
+        res.end(err.message);
+    }
+}
 
 new Delegator(proto, 'request')
     .getters('url')
@@ -35,6 +57,8 @@ new Delegator(proto, 'request')
 
 new Delegator(proto, 'response')
     .getters('body')
-    .setters('body')
+    .getters('body')
+    .setters('type')
+    .setters('status')
 
 module.exports = proto;
