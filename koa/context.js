@@ -57,7 +57,7 @@ new Delegator(proto, 'request')
 
 new Delegator(proto, 'response')
     .getters('body')
-    .getters('body')
+    .setters('body')
     .setters('type')
     .setters('status')
 
